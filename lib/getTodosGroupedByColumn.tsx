@@ -1,6 +1,6 @@
 import { databases } from "@/appwrite";
 
-export const getTodosGroupedByColumn = async () => {
+export const getTodosGroupedByColumn = async (userId: string) => {
   const data = await databases.listDocuments(
     process.env.NEXT_PUBLIC_DATABASE_ID!,
     process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!
@@ -24,25 +24,25 @@ export const getTodosGroupedByColumn = async () => {
     });
     return acc;
   }, new Map<TypedColumn, Column>());
-//   if the columns doesnt have inprogress,todo and done add them with empty todos
-const columnTypes:TypedColumn[]=["todo","inprogress","done"]
-for (const columnType of columnTypes){
-   if(!columns.get(columnType)){
-    columns.set(columnType,{
-     id:columnType,
-     todos:[]
-    })
-   }
-}
+  //   if the columns doesnt have inprogress,todo and done add them with empty todos
+  const columnTypes: TypedColumn[] = ["todo", "inprogress", "done"];
+  for (const columnType of columnTypes) {
+    if (!columns.get(columnType)) {
+      columns.set(columnType, {
+        id: columnType,
+        todos: [],
+      });
+    }
+  }
 
-// sort columns by COlumnTypes
-const sortedColumns=new Map( 
-    Array.from(columns.entries()).sort((a,b)=>(
-        columnTypes.indexOf(a[0]) - columnTypes.indexOf(b[0])
-    ))
-);
-const board:Board={
-    columns:sortedColumns
-}
-return board
+  // sort columns by COlumnTypes
+  const sortedColumns = new Map(
+    Array.from(columns.entries()).sort(
+      (a, b) => columnTypes.indexOf(a[0]) - columnTypes.indexOf(b[0])
+    )
+  );
+  const board: Board = {
+    columns: sortedColumns,
+  };
+  return board;
 };

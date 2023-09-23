@@ -14,7 +14,7 @@ interface Todo {
     $createdAt:string;
     title:string;
     status:TypedColumn;
-    image?:Image;
+    image:Image;
     // u can change the logic of whether some can have images here with image?
 }
 
