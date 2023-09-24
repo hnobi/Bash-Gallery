@@ -82,9 +82,9 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     image?: File | null
   ) => {
     let file: Image | undefined;
-
+ console.log(userID, '++++++', image)
     if (image) {
-      const fileUploaded = await uploadImage(image, "");
+      const fileUploaded = await uploadImage(image, userID );
       if (fileUploaded) {
         file = {
           bucketId: fileUploaded.bucketId,
@@ -101,7 +101,7 @@ export const useBoardStore = create<BoardState>((set, get) => ({
         title: todo,
         status: columnId,
         ...(file && { image: JSON.stringify(file) }),
-        userID: userID,
+        // userID: userID,
       }
     );
 
